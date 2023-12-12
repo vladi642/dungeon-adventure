@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1025519617592",
+    "firebase_url": "https://game-project-89e9b-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "game-project-89e9b",
+    "storage_bucket": "game-project-89e9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025519617592:android:ca2cbfa7c95cf45f9908cd",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.A2DProject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbZdFR4l84LJ9jWzHt3BvfdTyfFzDr35c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
