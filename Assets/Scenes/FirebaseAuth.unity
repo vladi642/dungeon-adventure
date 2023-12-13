@@ -4496,9 +4496,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 768877583}
+      - m_Target: {fileID: 768877581}
         m_TargetAssemblyTypeName: FirebaseController, Assembly-CSharp
-        m_MethodName: OpenLoginPanel
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
