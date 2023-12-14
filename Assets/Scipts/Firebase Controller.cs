@@ -74,13 +74,18 @@ public class FirebaseController : MonoBehaviour
 
     public void LogininUser()
     {
-        if (string.IsNullOrEmpty(loginEmail.text) && string.IsNullOrEmpty(loginPassword.text))
+        if (string.IsNullOrEmpty(loginEmail.text) || string.IsNullOrEmpty(loginPassword.text))
         {
             showNotificationMessage("Error", "Fields empty! Please Input Details In All Fields");
             return;
         }
+
+        // Debug log to check the password value
+        Debug.Log("Password: " + loginPassword.text);
+
         SignInUser(loginEmail.text, loginPassword.text);
     }
+
 
     public void SignUpUser()
     {
@@ -125,28 +130,53 @@ public class FirebaseController : MonoBehaviour
         OpenLoginPanel();
     }
 
-    public void CreateUser(string email, string password, string Username)
+    public void CreateUser(string email, string password, string username)
     {
+        // Check if the email is properly formatted
+        if (!IsValidEmail(email))
+        {
+            Debug.LogError("Invalid email format.");
+            return;
+        }
+
         auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
-        if (task.IsCanceled)
-        {
-            Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-            return;
-        }
-        if (task.IsFaulted)
-        {
-            Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-            return;
-        }
+            if (task.IsCanceled)
+            {
+                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                // Log detailed error information
+                foreach (Exception innerException in task.Exception.InnerExceptions)
+                {
+                    Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + innerException.Message);
+                }
+                return;
+            }
 
-        // Firebase user has been created.
-        Firebase.Auth.AuthResult result = task.Result;
-        Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-            result.User.DisplayName, result.User.UserId);
+            // Firebase user has been created.
+            Firebase.Auth.AuthResult result = task.Result;
+            Debug.LogFormat("Firebase user created successfully: {0} ({1})", result.User.DisplayName, result.User.UserId);
 
-            UpdateUserProfile(Username);
-    });
+            UpdateUserProfile(username);
+        });
     }
+
+    // Function to check email format validity
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
 
     public void SignInUser(string email, string password)
     {
