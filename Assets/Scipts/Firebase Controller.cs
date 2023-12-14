@@ -31,16 +31,13 @@ public class FirebaseController : MonoBehaviour
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
                 // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.
                 InitializeFirebase();
 
-                // Set a flag here to indicate whether Firebase is ready to use by your app.
             }
             else
             {
                 UnityEngine.Debug.LogError(System.String.Format(
                   "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                // Firebase Unity SDK is not safe to use here.
             }
         });
     }
@@ -107,6 +104,8 @@ public class FirebaseController : MonoBehaviour
             showNotificationMessage("Error", "Fields empty! Please Input Details In All Fields");
             return;
         }
+
+        forgetPasswordSubmit(forgetPassEmail.text);
     }
 
     private void showNotificationMessage(string title, string message)
@@ -329,5 +328,32 @@ public class FirebaseController : MonoBehaviour
                 break;
         }
         return message;
+    }
+
+    void forgetPasswordSubmit(string forgetPasswordEmail)
+    {
+        auth.SendPasswordResetEmailAsync(forgetPasswordEmail).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCanceled)
+            {
+                Debug.LogError("SendPasswordResetEmailAsync was canceled");
+            }
+            if (task.IsFaulted)
+            {
+                foreach (Exception exception in task.Exception.Flatten().InnerExceptions)
+                {
+                    Firebase.FirebaseException firebaseEx = exception as Firebase.FirebaseException;
+                    if (firebaseEx != null)
+                    {
+                        var errorCode = (AuthError)firebaseEx.ErrorCode;
+                        showNotificationMessage("Error", GetErrorMessage(errorCode));
+                    }
+                }
+            }
+
+            showNotificationMessage("Alert", "Successfully Send Email for Reset Password");
+
+        }
+        );
     }
 }
