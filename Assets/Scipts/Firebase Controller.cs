@@ -84,12 +84,12 @@ public class FirebaseController : MonoBehaviour
 
     public void SignUpUser()
     {
-        if (string.IsNullOrEmpty(signupEmail.text) && string.IsNullOrEmpty(signupPassword.text) && string.IsNullOrEmpty(signupCPassword.text) && string.IsNullOrEmpty(signupUserName.text)) ;
+        if (string.IsNullOrEmpty(signupEmail.text) && string.IsNullOrEmpty(signupPassword.text) && string.IsNullOrEmpty(signupCPassword.text) && string.IsNullOrEmpty(signupUserName.text))
         {
             showNotificationMessage("Error", "Fields empty! Please Input Details In All Fields");
             return;
         }
-        CreateUser(signupEmail.text, signupPassword.text,signupUserName.text);
+        CreateUser(signupEmail.text, signupPassword.text, signupUserName.text);
     }
 
     public void forgetPass()
@@ -148,7 +148,7 @@ public class FirebaseController : MonoBehaviour
     });
     }
 
-    public void SignInUser (string email, string password)
+    public void SignInUser(string email, string password)
     {
         auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
             if (task.IsCanceled)
@@ -162,11 +162,9 @@ public class FirebaseController : MonoBehaviour
                 return;
             }
 
-            Firebase.Auth.FirebaseUser newUser = task.Result;
-            Debug.LogFormat("User signed in successfully: {0} ({1})",
-                newUser.DisplayName, newUser.DisplayName);
-            profileUserName_Text.text = "" + newUser.DisplayName;
-            profileUserEmail_Text.text = "" + newUser.Email;
+            Debug.LogFormat("User signed in successfully: {0} ({1})", user.DisplayName, user.UserId);
+            profileUserName_Text.text = "" + user.DisplayName;
+            profileUserEmail_Text.text = "" + user.Email;
             OpenProfileUpPanel();
         });
     }
@@ -177,13 +175,16 @@ public class FirebaseController : MonoBehaviour
         auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
     }
-
+    void DebugLog(string message)
+    {
+        // Define your own DebugLog method if needed
+        Debug.Log(message);
+    }
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
         if (auth.CurrentUser != user)
         {
-            bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null
-                && auth.CurrentUser.IsValid();
+            bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
             if (!signedIn && user != null)
             {
                 DebugLog("Signed out " + user.UserId);
