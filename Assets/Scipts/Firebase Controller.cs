@@ -150,10 +150,18 @@ public class FirebaseController : MonoBehaviour
             }
             if (task.IsFaulted)
             {
-                // Log detailed error information
-                foreach (Exception innerException in task.Exception.InnerExceptions)
+               
+               
+                Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+
+                foreach (Exception exception in task.Exception.Flatten().InnerExceptions)
                 {
-                    Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + innerException.Message);
+                    Firebase.FirebaseException firebaseEx = exception as Firebase.FirebaseException;
+                    if (firebaseEx != null)
+                    {
+                        var errorCode = (AuthError)firebaseEx.ErrorCode;
+                        showNotificationMessage("Error", GetErrorMessage(errorCode));
+                    }
                 }
                 return;
             }
@@ -192,6 +200,15 @@ public class FirebaseController : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                foreach (Exception exception in task.Exception.Flatten().InnerExceptions)
+                {
+                    Firebase.FirebaseException firebaseEx = exception as Firebase.FirebaseException;
+                    if (firebaseEx != null)
+                    {
+                        var errorCode = (AuthError)firebaseEx.ErrorCode;
+                        showNotificationMessage("Error", GetErrorMessage(errorCode));
+                    }
+                }
                 return;
             }
 
@@ -279,5 +296,38 @@ public class FirebaseController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private static string GetErrorMessage(AuthError errorCode)
+    {
+        var message = "";
+        switch (errorCode)
+        {
+            case AuthError.AccountExistsWithDifferentCredentials:
+                message = "Account don't Exist";
+                break;
+            case AuthError.MissingPassword:
+                message = "Missing Password";
+                break;
+            case AuthError.WeakPassword:
+                message = "Password So Weak";
+                break;
+            case AuthError.WrongPassword:
+                message = "Wrong Password";
+                break;
+            case AuthError.EmailAlreadyInUse:
+                message = "Your Email Is Already in Use";
+                break;
+            case AuthError.InvalidEmail:
+                message = "Your Email is Invalid";
+                break;
+            case AuthError.MissingEmail:
+                message = "Your Email is missing";
+                break;
+            default:
+                message = "Invalid Error";
+                break;
+        }
+        return message;
     }
 }
