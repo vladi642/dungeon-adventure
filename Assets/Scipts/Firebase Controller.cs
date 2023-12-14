@@ -6,6 +6,7 @@ using Firebase;
 using Firebase.Auth;
 using System;
 using System.Threading.Tasks;
+using Firebase.Extensions;
 
 public class FirebaseController : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class FirebaseController : MonoBehaviour
 
     Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
+
+    bool isSignIn = false;
 
     private void Start()
     {
@@ -139,7 +142,7 @@ public class FirebaseController : MonoBehaviour
             return;
         }
 
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled)
             {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
@@ -180,7 +183,7 @@ public class FirebaseController : MonoBehaviour
 
     public void SignInUser(string email, string password)
     {
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => {
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => {
             if (task.IsCanceled)
             {
                 Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
@@ -223,7 +226,7 @@ public class FirebaseController : MonoBehaviour
             if (signedIn)
             {
                 DebugLog("Signed in " + user.UserId);
-                
+                isSignIn = true;
             }
         }
     }
@@ -260,6 +263,21 @@ public class FirebaseController : MonoBehaviour
 
                 showNotificationMessage("Alert", "Account Successfully Created");
             });
+        }
+        bool isSigned = false;
+
+        void Update()
+        {
+            if (isSignIn)
+            {
+                if (!isSigned)
+                {
+                    isSigned = true;
+                    profileUserName_Text.text = "" + user.DisplayName;
+                    profileUserEmail_Text.text = "" + user.Email;
+                    OpenProfileUpPanel();
+                }
+            }
         }
     }
 }
