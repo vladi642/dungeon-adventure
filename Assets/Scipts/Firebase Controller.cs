@@ -127,7 +127,7 @@ public class FirebaseController : MonoBehaviour
 
     public void LogOut()
     {
-
+        auth.SignOut();
         profileUserEmail_Text.text = "";
         profileUserName_Text.text = "";
         OpenLoginPanel();
