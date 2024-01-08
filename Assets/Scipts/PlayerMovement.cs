@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public Camera cam;
 
-    // Няма нужда от mousePos, защото ще използваме raycast
     Vector2 movement;
 
     void Update()
@@ -27,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (hit.collider != null)
         {
+            // Тук можеш да обработиш информацията за засегнатия обект, ако е необходимо
+            Debug.Log("Hit object: " + hit.collider.name);
+
+            // Пример за въртене на играча към позицията на мишката
             Vector2 lookDir = hit.point - rb.position;
             float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
             rb.rotation = angle;
