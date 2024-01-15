@@ -370,6 +370,7 @@ MonoBehaviour:
   moveSpeed: 5
   rb: {fileID: 1090318860}
   cam: {fileID: 1055529198}
+  animator: {fileID: 1090318863}
 --- !u!50 &1090318860
 Rigidbody2D:
   serializedVersion: 4
