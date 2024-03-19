@@ -12,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     private float buttonHoldTime = 0f;
     private Vector2 previousMovement;
 
+    private void Start()
+    {
+        
+    }
+
     void Update()
     {
         // Calculate movement input
@@ -22,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Horizontal", horizontal);
         animator.SetFloat("Vertical", vertical);
         animator.SetFloat("Speed", Mathf.Sqrt(horizontal * horizontal + vertical * vertical));
+        // rb.velosity.sqrmagnitude
 
         // Check if the player is holding a button
         if (horizontal != 0f || vertical != 0f)
@@ -47,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Move the player based on the current movement input
         rb.MovePosition(rb.position + previousMovement * moveSpeed * Time.fixedDeltaTime);
-
+        
         // Use raycast to find the position of the mouse in world coordinates
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);

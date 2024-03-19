@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class movementController : StateMachineBehaviour
+public class MovementController : StateMachineBehaviour
 {
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public Camera cam;
+    public Animator animator;
 
     Vector2 movement;
 
@@ -14,6 +13,12 @@ public class movementController : StateMachineBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
+        // Set the "AttackTrigger" parameter when the left mouse button is pressed
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetBool("AttackTrigger", true);
+        }
     }
 
     void FixedUpdate()
@@ -36,6 +41,7 @@ public class movementController : StateMachineBehaviour
         }
     }
 }
+
 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 //{
