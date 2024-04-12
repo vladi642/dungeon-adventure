@@ -55,18 +55,18 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + previousMovement * moveSpeed * Time.fixedDeltaTime);
         
         // Use raycast to find the position of the mouse in world coordinates
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+        ///////////Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+      ///////////  RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-        if (hit.collider != null)
+       // if (hit.collider != null)
         {
             // Process information about the hit object if needed
-            Debug.Log("Hit object: " + hit.collider.name);
+          //////////  Debug.Log("Hit object: " + hit.collider.name);
 
             // Example: Rotate the player towards the mouse position
-            Vector2 lookDir = hit.point - rb.position;
-            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
-            rb.rotation = angle;
+           // ///////////Vector2 lookDir = hit.point - rb.position;
+           // ////////////float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+           // ///////////rb.rotation = angle;
         }
     }
 }
