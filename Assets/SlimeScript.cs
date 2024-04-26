@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeScript : MonoBehaviour, IDamageable
+public class SlimeScript : MonoBehaviour
 {
     public float damage = 1;
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public Animator animator;
-    public float health = 3;
+    public float health;    
     private bool isAlive;
     public detectionzone detectionzone;
 
@@ -22,8 +22,7 @@ public class SlimeScript : MonoBehaviour, IDamageable
         }
     }
     public float Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    float IDamageable.Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-    bool IDamageable.Targetable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,15 +52,6 @@ public class SlimeScript : MonoBehaviour, IDamageable
         }
     }
 
-    void IDamageable.OnHit(float damage)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void IDamageable.OnObjectDestroyed()
-    {
-        throw new System.NotImplementedException();
-    }
     void OnCollisionEnter2D(Collision col)
     {
         Debug.Log("Test");

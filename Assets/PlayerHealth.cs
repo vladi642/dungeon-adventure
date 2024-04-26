@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour , IDamageable
     public float Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     float IDamageable.Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     bool IDamageable.Targetable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    float IDamageable.health { set => throw new System.NotImplementedException(); }
 
     public float health = 3f;
     public bool targetable = true;
@@ -25,8 +26,9 @@ public class PlayerHealth : MonoBehaviour , IDamageable
         throw new System.NotImplementedException();
     }
 
-   //ublic void OnObjectDestroyed()
-   //
-    //  Destroy(gameObject);
-    //
+    public void OnObjectDestroyed()
+    {
+        Destroy(gameObject);
+    }
+
 }

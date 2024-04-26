@@ -37,6 +37,7 @@ public class Damageable : MonoBehaviour, IDamageable
     public bool Targetable { get { return Targetable; } }
 
     bool IDamageable.Targetable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    float IDamageable.health { set => throw new System.NotImplementedException(); }
 
     public void OnHit(float damage)
     {
